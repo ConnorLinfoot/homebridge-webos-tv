@@ -166,7 +166,7 @@ webosTvAccessory.prototype.prepareVolumeService = function() {
 			.on('set', this.setMuteState.bind(this));
 
 		this.volumeService
-			.addCharacteristic(new Characteristic.Brightness())
+			.addCharacteristic(new Characteristic.Speed())
 			.on('get', this.getVolume.bind(this))
 			.on('set', this.setVolume.bind(this));
 
