@@ -158,7 +158,7 @@ webosTvAccessory.prototype.prepareVolumeService = function() {
 
 	// slider/lightbulb
 	if(this.volumeControl == true || this.volumeControl === "slider"){
-		this.volumeService = new Service.Lightbulb(this.name + " Volume", "volumeService");
+		this.volumeService = new Service.Fan(this.name + " Volume", "volumeService");
 
 		this.volumeService
 			.getCharacteristic(Characteristic.On)
