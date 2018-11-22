@@ -45,6 +45,7 @@ function webosTvAccessory(log, config, api) {
 			    // monitor now playing info
 			    device.on('nowPlaying', (info) => {
 				    console.log(info.toString());
+				    console.log(info.playbackState);
 			    });
 		    })
 		    .catch(error => {
