@@ -34,18 +34,23 @@ function webosTvAccessory(log, config, api) {
     	this.appleTvUi = null;
     } else {
 	    this.appleTvCredentials = atv.parseCredentials(this.appleTvCredentials);
+	    this.appleTVStateService = new Service.MotionSensor(this.name);
+	    this.appleTVStateService
+		    .getCharacteristic(Characteristic.MotionDetected)
+		    .on('get', this.getState.bind(this));
 	    atv.scan(this.appleTvUi)
 		    .then(devices => {
 			    let device = devices[0];
 			    return device.openConnection(this.appleTvCredentials);
 		    })
 		    .then(device => {
-			    console.log('Listening for Apple TV..');
+			    console.log('Connected to Apple TV!');
 
 			    // monitor now playing info
 			    device.on('nowPlaying', (info) => {
 				    console.log(info.toString());
-				    console.log(info.playbackState);
+				    const state = info.playbackState == 'playing';
+				    this.appleTVStateService.setCharacteristic(Characteristic.MotionDetected, state);
 			    });
 		    })
 		    .catch(error => {
