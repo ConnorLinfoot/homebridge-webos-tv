@@ -37,7 +37,7 @@ function webosTvAccessory(log, config, api) {
 	    atv.scan(this.appleTvUi)
 		    .then(devices => {
 			    let device = devices[0];
-			    return device.openConnection(credentials);
+			    return device.openConnection(this.appleTvCredentials);
 		    })
 		    .then(device => {
 			    console.log('Listening for Apple TV..');
