@@ -1,6 +1,7 @@
 const lgtv2 = require('lgtv2');
 const wol = require('wake_on_lan');
 const tcpp = require('tcp-ping');
+import { scan, parseCredentials, NowPlayingInfo } from 'node-appletv';
 
 let lgtv, Service, Characteristic;
 var tvVolume = 0;
@@ -26,6 +27,30 @@ function webosTvAccessory(log, config, api) {
     this.mac = config['mac'];
     this.keyFile = config['keyFile'];
     this.volumeControl = config['volumeControl'];
+    this.appleTvCredentials = config['appleTvCredentials'];
+    this.appleTvUi = config['appleTvUi'];
+    if( this.appleTvCredentials == undefined || this.appleTvUi == undefined ) {
+    	this.appleTvCredentials = null;
+    	this.appleTvUi = null;
+    } else {
+	    this.appleTvCredentials = parseCredentials(this.appleTvCredentials);
+	    scan(this.appleTvUi)
+		    .then(devices => {
+			    let device = devices[0];
+			    return device.openConnection(credentials);
+		    })
+		    .then(device => {
+			    console.log('Listening for Apple TV..');
+
+			    // monitor now playing info
+			    device.on('nowPlaying', (info: NowPlayingInfo) => {
+				    console.log(info.toString());
+			    });
+		    })
+		    .catch(error => {
+			    console.log(error);
+		    });
+    }
     if (this.volumeControl == undefined) {
         this.volumeControl = true;
     }
