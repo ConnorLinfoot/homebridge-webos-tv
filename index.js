@@ -172,6 +172,9 @@ function webosTvAccessory(log, config, api) {
 
     this.enabledServices.push(this.powerService);
     this.enabledServices.push(this.informationService);
+    if( this.appleTVStateService !== undefined ) {
+	    this.enabledServices.push(this.appleTVStateService);
+    }
 
     this.prepareVolumeService();
     this.prepareAppSwitchService();
